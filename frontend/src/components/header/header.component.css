@@ -1,0 +1,28 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+
+.container {
+    max-width: auto;
+    margin: 0 auto;
+    text-align: center;
+}
+
+h1, p {
+    font-family: "Montserrat", sans-serif;
+}
+
+.aniTalkLogo
+{
+    height: 65px;
+    width: 65px;
+}
+
+h1{
+    font-size: 25px;
+}
+
+.hero {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    gap: 5px;
+}

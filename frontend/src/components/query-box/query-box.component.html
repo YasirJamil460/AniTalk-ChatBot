@@ -1,0 +1,25 @@
+<div class="query-container">
+    
+    
+    <textarea
+      [(ngModel)]="userQuery"
+      placeholder="Message AniTalk"
+      rows="2"
+      cols="65"
+    ></textarea>
+
+
+    <button 
+        [disabled]="!userQuery.trim()" 
+        (click)="submitQuery()"
+        [title]="!userQuery?.trim() ? 'Message is Empty' : ''">
+        <i>&uarr;</i>
+    </button>
+
+    <div *ngIf="!userQuery?.trim()" class="custom-tooltip">
+        <p>Message is empty</p>
+    </div>
+    
+
+  </div>
+  

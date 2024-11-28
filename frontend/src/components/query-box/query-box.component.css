@@ -1,0 +1,115 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+
+textarea, p {
+    font-family: "Montserrat", sans-serif;
+}
+
+
+.query-container {
+    position: fixed; /* Sticks the component to the viewport */
+    bottom: 20px; /* Distance from the bottom of the screen */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Adjust to align center */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 700px;
+    width: 100%;
+    padding: 15px;
+    align-items: flex-start;
+    background-color: #e8e8e880; /* Unified background color */
+    border-radius: 25px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: shadow for better visibility */
+    box-sizing: border-box;
+    justify-content: left;
+}
+
+textarea {
+    flex: 1;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    resize: none;
+    background-color: transparent;
+    outline: none;
+    box-sizing: border-box;
+}
+
+textarea:focus {
+    outline: none;
+    border: none; 
+}
+
+button {
+    padding: 10px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+}
+
+button:hover {
+    background-color: #727272ce;
+}
+
+button:disabled {
+    background-color: #ccc;
+    cursor: default;
+}
+
+.button-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.custom-tooltip {
+    position: absolute;
+    top: -25%;
+    right: -18%;
+    transform: translateX(-50%);
+    background-color: black;
+    color: white;
+    padding: 5px;
+    font-size: 15px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    white-space: nowrap;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+}
+
+.custom-tooltip::after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 8px solid black; 
+}
+
+p {
+    margin: 5px;
+}
+
+button:disabled:hover + .custom-tooltip {
+    opacity: 1;
+}
+
+button i {
+    font-size: 16px;
+}
