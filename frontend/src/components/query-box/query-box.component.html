@@ -12,7 +12,7 @@
     <button 
         [disabled]="!userQuery.trim()" 
         (click)="submitQuery()"
-        [title]="!userQuery?.trim() ? 'Message is Empty' : ''">
+        [title]="!userQuery.trim() ? 'Message is Empty' : ''">
         <i>&uarr;</i>
     </button>
 

@@ -12,4 +12,10 @@ import { QueryBoxComponent } from '../query-box/query-box.component';
 })
 export class BodyComponent {
 
+  userQueryInBody: any = ''
+
+  getUserQuery(userQuery : any) {
+    this.userQueryInBody = userQuery
+  }
+
 }

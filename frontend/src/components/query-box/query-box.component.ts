@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -10,15 +10,15 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './query-box.component.css'
 })
 export class QueryBoxComponent {
-  userQuery: string = ''
+  userQuery: any = ''
   
+  @Output() sendUserQuery : any = new EventEmitter
   
   submitQuery() {
     if (this.userQuery.trim()) {
-      console.log('User Query:', this.userQuery);
+      this.sendUserQuery.emit(this.userQuery)
       this.userQuery = '';
     }
   }
-
 
 }

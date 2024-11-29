@@ -1,0 +1,36 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+
+h1, h5 {
+    font-family: "Montserrat", sans-serif;
+}
+
+
+
+.preview {
+    background: linear-gradient(90deg, #ff6f61, #ffcc00, #6a5acd, #50c878, #ffcc00, #ff6f61);
+    background-size: 500%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradient-flow 5s infinite linear;
+    padding: 100px;
+    text-align: center;
+}
+
+.preview h5 {
+    font-size: 20px;
+    font-weight: 200;
+}
+
+.preview h1 {
+    font-size: 48px;
+}
+
+/* Smooth flow for the gradient */
+@keyframes gradient-flow {
+    0% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 100% 50%;
+    }
+}
