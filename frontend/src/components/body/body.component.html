@@ -1,5 +1,5 @@
 
-<app-chat-container [getValuefromQueries] = 'userQueryInBody' ></app-chat-container>
-<app-query-box (sendUserQuery)="getUserQuery($event)"></app-query-box>
+<app-chat-container [getValuefromLLM] = 'userResponseBody' ></app-chat-container>
+<app-query-box (sendUserQuery)="getResponse($event)"></app-query-box>
 
 <router-outlet></router-outlet>

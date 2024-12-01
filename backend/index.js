@@ -1,71 +1,76 @@
 const express = require('express');
 const axios = require('axios');
 const { GoogleGenerativeAI } = require("@google/generative-ai");
+const cors = require('cors');
 require("dotenv").config();
 
 const app = express();
 app.use(express.json());
+app.use(cors())
 
 const port = 5000;
+let chatArray = []
 
 
+// Initialize Google Generative AI
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-const prompt = "write 5 asteriks each in one row in c++";
-
+// Function to generate a response from the AI model
 const func = async (prompt) => {
-    const result = await model.generateContent(prompt);
-    console.log(result.response.text());
-}
+    try {
+        console.log('Prompt:', prompt);
 
-func(prompt)
+        const result = await model.generateContent(prompt);
 
+        const responseText = result.response.text();
+        console.log('/nResult:', responseText);
 
+        return responseText
+
+    } catch (error) {
+
+        console.error('Error generating content:', error.message);
+        return error;
+
+    }
+};
+
+// POST endpoint to handle user queries
+app.post('/user-query', async (req, res) => { 
+
+    try {
+        let prompt = req.body.message; // Explicitly extract `prompt` from the request body
+        if (!prompt) {
+            return res.status(400).json({ message: "Prompt is required" });
+        }
+        const responseText = await func(prompt);
+    
+        if(responseText) {
+            const chat = { message: prompt, response: responseText };
+        
+            chatArray.push(chat);
+            console.log(chatArray);
+
+            res.json(chatArray)
+        }
+        else{
+            console.log('couldnt process response');
+        }
+    
+    } catch (err) {
+        console.error('Error handling user query:', err.message);
+        res.status(500).json({ message: "Error processing the request", error: err.message });
+    }
+
+});
+
+// GET endpoint to fetch all chat history
+app.get('/response', (req, res) => {
+    res.json(chatArray);
+});
+
+// Start the server
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
 });
-
-
-
-
-
-// // Example input message
-// const msg = 'write code for 5 asterisks each in one row';
-
-// // Mock Gemini API details (replace with real API details)
-// const GEMINI_API_URL = 'https://gemini.api.endpoint'; // Replace with Gemini's API URL
-// const GEMINI_API_KEY = process.env.GEMINI_API_KEY; // Store your API key in .env file
-
-// // Route to send input to Gemini LLM and get response
-// app.get('/generate-code', async (req, res) => {
-//     try {
-//         const response = await axios.post(GEMINI_API_URL, {
-//             prompt: msg,
-//             max_tokens: 100,
-//         }, {
-//             headers: {
-//                 'Authorization': `Bearer ${GEMINI_API_KEY}`,
-//                 'Content-Type': 'application/json',
-//             },
-//         });
-//         res.send({
-//             success: true,
-//             input: msg,
-//             output: response.data.choices[0].text.trim(),
-//         });
-//     } catch (error) {
-//         console.error('Error communicating with Gemini API:', error.response?.data || error.message);
-//         res.status(500).send({
-//             success: false,
-//             error: 'Failed to communicate with Gemini LLM. Check the server logs.',
-//             details: error.response?.data || error.message,
-//         });
-//     }
-    
-// });
-
-
-
-// Start the server
-

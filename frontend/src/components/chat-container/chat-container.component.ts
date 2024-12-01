@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges,} from '@angular/core';
 
 @Component({
   selector: 'app-chat-container',
@@ -8,8 +8,17 @@ import { Component, Input } from '@angular/core';
   templateUrl: './chat-container.component.html',
   styleUrl: './chat-container.component.css'
 })
-export class ChatContainerComponent {
+export class ChatContainerComponent implements OnChanges{
 
-  @Input() getValuefromQueries ?: any 
-  
+  @Input() getValuefromLLM : any
+
+  isRecieved : boolean = false
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['getValuefromLLM'] && Array.isArray(this.getValuefromLLM)) {
+      this.isRecieved = this.getValuefromLLM.length > 1;
+    }
+  }
+
 }
+

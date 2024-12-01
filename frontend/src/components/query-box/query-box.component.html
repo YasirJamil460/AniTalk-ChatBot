@@ -1,25 +1,25 @@
-<div class="query-container">
-    
-    
+<div class="background">
+  
+  <div class="query-container">
     <textarea
       [(ngModel)]="userQuery"
       placeholder="Message AniTalk"
       rows="2"
       cols="65"
+      (keydown)="handleKeydown($event)"
+      autofocus
     ></textarea>
-
-
-    <button 
-        [disabled]="!userQuery.trim()" 
-        (click)="submitQuery()"
-        [title]="!userQuery.trim() ? 'Message is Empty' : ''">
-        <i>&uarr;</i>
+  
+    <button
+      [disabled]="!userQuery.trim()" 
+      (click)="submitQuery()">
+      <span *ngIf="!isLoading"><i class="arrow-icon">&uarr;</i></span>
+      <div *ngIf="isLoading" class="spinner"></div>
     </button>
-
+  
     <div *ngIf="!userQuery?.trim()" class="custom-tooltip">
-        <p>Message is empty</p>
+      <p>Message is empty</p>
     </div>
-    
-
   </div>
   
+</div>

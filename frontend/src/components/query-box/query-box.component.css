@@ -5,6 +5,14 @@ textarea, p {
 }
 
 
+.background {
+    position: fixed;
+    background-color: white;
+    bottom: 0;
+    height: 17vh;
+    width: 100%;
+}
+
 .query-container {
     position: fixed; /* Sticks the component to the viewport */
     bottom: 20px; /* Distance from the bottom of the screen */
@@ -17,7 +25,7 @@ textarea, p {
     width: 100%;
     padding: 15px;
     align-items: flex-start;
-    background-color: #e8e8e880; /* Unified background color */
+    background-color: #e8e8e8; /* Unified background color */
     border-radius: 25px;
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: shadow for better visibility */
@@ -113,3 +121,34 @@ button:disabled:hover + .custom-tooltip {
 button i {
     font-size: 16px;
 }
+
+
+.spinner {
+    border: 2px solid rgba(0, 0, 0, 0.2); 
+    border-top: 2px solid white;         
+    border-radius: 50%;                  
+    width: 16px;                         
+    height: 16px;                     
+    animation: spin 0.6s linear infinite;
+    background-color: black; 
+}
+  
+@keyframes spin {
+    0% {
+        transform: rotate(0deg); /* Start at 0 degrees */
+    }
+    100% {
+        transform: rotate(360deg); /* Complete 360-degree rotation */
+    }
+}
+
+
+.arrow-icon {
+    font-weight: bolder; /* Make the arrow bold */
+    font-size: 28px; /* Increase the size of the arrow */
+    transform: scale(2.0, 1.4); /* Stretch the arrow evenly */
+    display: inline-block;
+    padding-bottom: 3px;
+}
+
+  

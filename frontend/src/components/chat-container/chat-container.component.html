@@ -1,5 +1,18 @@
 
-<div class="preview" *ngIf="!getValuefromQueries" >
+<div class="preview" *ngIf="!isRecieved" >
     <h1>Hi, Yasir!</h1>
     <h5>How can i help you?</h5>
+</div>
+
+<div class="result" *ngIf="getValuefromLLM?.length && isRecieved">
+    
+    <ul class="list">
+
+        @for (data of getValuefromLLM; track $index) {
+        <li class="message">{{data.message}}</li>
+        <li class="response">{{data.response}}</li>
+        }
+
+    </ul>
+
 </div>
