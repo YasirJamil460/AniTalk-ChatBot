@@ -1,16 +1,19 @@
 
-<div class="preview" *ngIf="!isRecieved" >
+<div class="preview" *ngIf="getValuefromLLM.length < 1" >
     <h1>Hi, Yasir!</h1>
     <h5>How can i help you?</h5>
 </div>
 
 
-<div class="result" *ngIf="isRecieved">
+<div class="result" *ngIf="getValuefromLLM.length > 0">
     <ul class="list" #chatContainer>
         
         @for (data of getValuefromLLM; track $index) {
             <li class="message">{{data.message}}</li>
-            <li class="response"> <span [innerHTML]="data.response | highlight"></span></li>
+            <li class="response">
+                <img src="images/Chatbot_img.png" alt="AniTalk" /> 
+                <span [innerHTML]="data.response | highlight"></span>
+            </li>
         }
 
     </ul>

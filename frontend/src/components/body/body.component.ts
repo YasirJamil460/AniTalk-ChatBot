@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, AfterViewInit, OnChanges, SimpleChanges } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ChatContainerComponent } from '../chat-container/chat-container.component';
 import { QueryBoxComponent } from '../query-box/query-box.component';
@@ -9,14 +9,14 @@ import { Chat } from '../../models/chat.type';
   standalone: true,
   imports: [RouterOutlet, ChatContainerComponent, QueryBoxComponent],
   templateUrl: './body.component.html',
-  styleUrl: './body.component.css'
+  styleUrls: ['./body.component.css'],
 })
-export class BodyComponent {
+export class BodyComponent  {
+  userResponseBody: Chat[] = [];
 
-  userResponseBody =  <Array<Chat>> []
-
-  getResponse(userQuery: Array<Chat>) {
+  getResponse(userQuery: Chat[]) {
     this.userResponseBody = userQuery;
+    // this.scrollChatToBottom(); // Scroll to bottom after updating data
   }
 
 }
