@@ -49,7 +49,7 @@ app.post('/user-query', async (req, res) => {
         if(responseText) {
             const chat = { message: prompt, response: responseText };
         
-            chatArray.push(chat);
+            chatArray = [...chatArray, chat];
             console.log(chatArray);
 
             res.json(chatArray)

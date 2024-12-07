@@ -18,7 +18,8 @@ export class QueryBoxComponent {
 
   @Output() sendUserQuery : any = new EventEmitter
 
-  chat = <Array<Chat>> []
+  chat: Array<Chat> | null = null;
+
 
   private queryBox = inject(QueryBoxService)
   

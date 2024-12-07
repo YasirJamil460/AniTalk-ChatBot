@@ -1,4 +1,4 @@
-/* You can add global styles to this file, and also import other style files */
-body {
-    overflow-y: none;
-}
+body, html {
+    overflow: hidden; /* Prevent the body from scrolling */
+    height: 100%;
+  }

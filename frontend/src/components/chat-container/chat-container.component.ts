@@ -1,5 +1,17 @@
-import { CommonModule } from '@angular/common';
-import { Component, ElementRef, inject, Input, OnInit, OnDestroy, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
+import { 
+  CommonModule 
+} from '@angular/common';
+import { 
+  Component, 
+  ElementRef, 
+  Input, 
+  OnInit, 
+  OnChanges, 
+  SimpleChanges, 
+  AfterViewChecked, 
+  OnDestroy, 
+  inject 
+} from '@angular/core';
 import { HighlightPipe } from '../../pipes/highlight.pipe';
 import { QueryBoxService } from '../../services/query-box.service';
 import { Chat } from '../../models/chat.type';
@@ -12,60 +24,86 @@ import { Subscription } from 'rxjs';
   templateUrl: './chat-container.component.html',
   styleUrls: ['./chat-container.component.css'],
 })
-export class ChatContainerComponent implements OnInit, OnChanges, OnDestroy {
+export class ChatContainerComponent 
+  implements OnInit, OnChanges, AfterViewChecked, OnDestroy 
+{
   elRef = inject(ElementRef);
   @Input() getValuefromLLM: Chat[] = [];
   private queryBox = inject(QueryBoxService);
   private subscription!: Subscription;
-  private cdr = inject(ChangeDetectorRef);
+
+  private shouldScroll = false; // Flag to ensure scrolling only when needed
 
   ngOnInit(): void {
-    // Subscribe to the service to fetch messages
+    console.log('[ngOnInit] Component initialized');
+
+    // Subscribe to service to fetch messages
     this.subscription = this.queryBox.getResponse().subscribe({
       next: (resp: Chat[]) => {
+        console.log('[Subscription] New data received from QueryBoxService:', resp);
+
         if (resp) {
           this.getValuefromLLM = resp;
+          this.shouldScroll = true; // Trigger scroll when new data is fetched
+          console.log('[Subscription] shouldScroll set to true');
         }
       },
       error: (err) => {
-        console.error(err);
+        console.error('[Subscription] Error while fetching data:', err);
       },
     });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['getValuefromLLM'] && this.getValuefromLLM.length) {
-      // Trigger change detection to update the view
-      this.cdr.detectChanges();
-      console.log("before scroll chat func");
-      
-      this.scrollChatToBottom(); // Scroll to bottom when data changes
+    if (changes['getValuefromLLM']) {
+      console.log('[ngOnChanges] getValuefromLLM changed:', changes['getValuefromLLM'].currentValue);
+
+      if (this.getValuefromLLM.length) {
+        this.shouldScroll = true; // Trigger scroll when data changes
+        console.log('[ngOnChanges] shouldScroll set to true');
+      }
     }
   }
 
-  get scrollContainer(): HTMLElement {
-    return this.elRef.nativeElement.querySelector('.list');
+  ngAfterViewChecked(): void {
+    if (this.shouldScroll) {
+      console.log('[ngAfterViewChecked] shouldScroll is true, scrolling to bottom');
+      this.scrollChatToBottom();
+      this.shouldScroll = false; // Reset flag after scrolling
+      console.log('[ngAfterViewChecked] shouldScroll set to false after scrolling');
+    }
   }
 
-  private scrollChatToBottom() {
-    console.log('inside scoll chat func');
-    
+  get scrollContainer(): HTMLElement | null {
+    const container = this.elRef.nativeElement.querySelector('.result');
+    console.log('[scrollContainer] DOM element:', container);
+    return container;
+  }
+
+  private scrollChatToBottom(): void {
     const element = this.scrollContainer;
     if (element) {
-      // Use setTimeout to wait for Angular to update the DOM
-      setTimeout(() => {
-        element.scrollTo({          
-          top: element.scrollHeight,  // Scroll to the bottom of the content
-          behavior: 'smooth',         // Optional smooth scrolling
-        });
-        console.log("aftersettimout");
-        
-      }, 0); // Ensure this happens after DOM updates
+      let currentScroll = element.scrollTop;
+      const targetScroll = element.scrollHeight;
+  
+      const step = () => {
+        if (currentScroll < targetScroll) {
+          currentScroll += 500;  // Adjust increment based on the speed you want
+          element.scrollTop = currentScroll;
+          requestAnimationFrame(step);  // Continue animating the scroll
+        } else {
+          element.scrollTop = targetScroll; // Ensure the scroll position is exact
+        }
+      };
+  
+      step();
     }
   }
+  
 
   ngOnDestroy(): void {
-    // Unsubscribe to avoid memory leaks
+    console.log('[ngOnDestroy] Cleaning up subscriptions');
+    // Clean up subscriptions to avoid memory leaks
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
